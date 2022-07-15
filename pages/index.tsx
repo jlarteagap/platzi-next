@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react'
+import fetch from 'isomorphic-unfetch'
 
-const HomePage = () => {
-  const [productList, setProductList] = useState<TProduct[]>([])
+export const getServerSideProps = async () => {
+  const response = await fetch('https://platzi-avo.vercel.app/api/avo')
+  const { data }: TAPIAvoResponse = await response.json()
 
-  useEffect(() => {
-    window
-      .fetch('/api/avo')
-      .then((res) => res.json())
-      .then(({ data, length }) => {
-        setProductList(data)
-      })
-  }, [])
+  return {
+    props: {
+      productList: data,
+    },
+  }
+}
+const HomePage = ({ productList }: { productList: TProduct[] }) => {
+  useEffect(() => {}, [])
   return (
     <div>
       <div>Platzi and Next.jss!</div>
